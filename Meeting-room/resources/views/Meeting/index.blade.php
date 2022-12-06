@@ -39,16 +39,15 @@
                               <td>{{$row->timeroom}}</td>
                               <td>{{$row->name}}</td>
                               <td>
-                                 <a href="" class="btn btn-primary">แก้ไข</a>
+                                 <a href="{{url('/meeting/edit/'.$row->id)}}" class="btn btn-warning">แก้ไข</a>
                               </td>
                               <td>
-                                 <a href="" class="btn btn-warning">ลบข้อมูล</a>
+                                 <a href="" class="btn btn-danger">ลบข้อมูล</a>
                               </td>
                            </tr>
                            @endforeach
                         </tbody>
                      </table>
-                     <!-- ทำให้มีหลายหน้าใช้คำสั่งนี้ ซึ่งมันจะสัมพันกับคำสั่ง $department = Department::paginate(3); ในส่วนของ Controller-->
                   </div>
                </div>
             </div>

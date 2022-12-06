@@ -49,4 +49,10 @@ class MeetingController extends Controller
 
         return redirect()->back()->with('success', "บันทึกข้อมูลเรียบร้อย");
     }
+
+    public function edit($id)
+    {
+        $meeting = Addroom::find($id);
+        return view('meeting.edit', compact('meeting'));
+    }
 }

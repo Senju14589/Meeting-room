@@ -37,7 +37,7 @@
                               <img src="{{url('image/2.jpg')}}" class="img-fluid" alt="...">
                            </div>
                         </div>
-                        <a href="{{route('meeting')}}" class="btn btn-success mt-3">ค้นหา</a>
+                        <a href="{{route('meeting')}}" class="btn btn-success mt-3">ดูห้องที่จองไว้</a>
                      </div>
                   </div>
                </div>
