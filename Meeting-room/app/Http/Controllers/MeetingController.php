@@ -16,7 +16,7 @@ class MeetingController extends Controller
 
         $meeting = DB::table('addrooms')
             ->join('users', 'addrooms.user_id', 'users.id')->where('user_id', Auth::user()->id)
-            ->select('addrooms.*', 'users.name')->paginate(5);
+            ->select('addrooms.*', 'users.name')->paginate(10);
 
 
         return view('Meeting.index', compact('meeting'));
@@ -25,34 +25,55 @@ class MeetingController extends Controller
     public function store(Request $request)
     {
         //ตรวจสอบข้อมูล
-        $request->validate(
-            [
-                'nameroom' => 'required',
-                'dateroom' => 'required',
-                'timeroom' => 'required'
-            ],
-            [
-                'nameroom.required' => "กรุณาระบุห้องที่ต้องการจองด้วยครับ",
-                'dateroom.required' => "กรุณาระบุวันที่ต้องการจองด้วยครับ",
-                'timeroom.required' => "กรุณาระบุเวลาที่ต้องการจองด้วยครับ"
-            ]
-        );
+        $dataDetail = Addroom::where('nameroom', $request->nameroom)
+            ->where('dateroom', $request->dateroom)
+            ->where('timeroom', '<=', $request->endtimeroom)
+            ->where('endtimeroom', '>=', $request->timeroom)->first();
 
-        //บันทึกข้อมูลแบบ Query Builder
-        $data = array();
-        $data["nameroom"] = $request->nameroom;
-        $data["dateroom"] = $request->dateroom;
-        $data["timeroom"] = $request->timeroom;
-        $data["user_id"] = Auth::user()->id;
-        //Query Builder
-        DB::table('addrooms')->insert($data);
+        if ($dataDetail) {
+            return redirect()->route('meeting')->with('error', "ห้องนี้ในวันนี้เวลานี้ มีคนจองแล้วครับ");
+        } else {
+            $data = array();
+            $data["nameroom"] = $request->nameroom;
+            $data["dateroom"] = $request->dateroom;
+            $data["timeroom"] = $request->timeroom;
+            $data["endtimeroom"] = $request->endtimeroom;
+            $data["user_id"] = Auth::user()->id;
 
-        return redirect()->back()->with('success', "บันทึกข้อมูลเรียบร้อย");
+            DB::table("addrooms")->insert($data);
+            return redirect()->route('meeting')->with('success', "บันทึกข้อมูลเรียบร้อย");
+        }
     }
 
     public function edit($id)
     {
         $meeting = Addroom::find($id);
         return view('meeting.edit', compact('meeting'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $dataDetail = Addroom::where('nameroom', $request->nameroom)
+            ->where('dateroom', $request->dateroom)
+            ->where('timeroom', '<=', $request->endtimeroom)
+            ->where('endtimeroom', '>=', $request->timeroom)->first();
+        if ($dataDetail) {
+            return redirect()->route('meeting')->with('error', "ห้องนี้ในวันนี้เวลานี้ มีคนจองแล้วครับ");
+        } else {
+            $update = Addroom::find($id)->update([
+                'nameroom' => $request->nameroom,
+                'dateroom' => $request->dateroom,
+                'timeroom' => $request->timeroom,
+                'endtimeroom' => $request->endtimeroom,
+                'USer_id' => Auth::user()->id
+            ]);
+            return redirect()->route('meeting')->with('success', "บันทึกข้อมูลเรียบร้อย");
+        }
+    }
+
+    public function delete($id)
+    {
+        $delete = Addroom::find($id)->forcedelete();
+        return redirect()->back()->with('success', "ลบข้อมูลถาวรเรียบร้อย");
     }
 }

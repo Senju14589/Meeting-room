@@ -13,14 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('addrooms', function (Blueprint $table) {
-            $table->id();
-            $table->integer('user_id');
-            $table->string('nameroom');
-            $table->date('dateroom');
-            $table->time('timeroom');
-            $table->time('endtimeroom');
-            $table->timestamps();
+        Schema::table('users', function ($table) {
+            $table->string('facebook_id')->nullable();
         });
     }
 
@@ -31,6 +25,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('addrooms');
+        //
     }
 };

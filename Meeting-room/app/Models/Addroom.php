@@ -14,6 +14,7 @@ class Addroom extends Model
         'nameroom',
         'dateroom',
         'timeroom',
+        'endtimeroom'
     ];
 
     public function user()

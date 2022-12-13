@@ -15,6 +15,9 @@
                   @if(session("success"))
                   <div class="alert alert-success">{{session("success")}}</div>
                   @endif
+                  @if(session("error"))
+                  <div class="alert alert-danger">{{session("error")}}</div>
+                  @endif
                   <div class="card">
                      <div class="card-header">ตารางข้อมูลการจองห้องประชุม</div>
                      <table class="table table-bordered">
@@ -36,13 +39,13 @@
                               <th>{{$meeting->firstItem()+$loop->index}}</th>
                               <td>{{$row->nameroom}}</td>
                               <td>{{$row->dateroom}}</td>
-                              <td>{{$row->timeroom}}</td>
+                              <td>{{$row->timeroom}} ถึง {{$row->endtimeroom}}</td>
                               <td>{{$row->name}}</td>
                               <td>
                                  <a href="{{url('/meeting/edit/'.$row->id)}}" class="btn btn-warning">แก้ไข</a>
                               </td>
                               <td>
-                                 <a href="" class="btn btn-danger">ลบข้อมูล</a>
+                                 <a href="{{url('/meeting/delete/'.$row->id)}}" class="btn btn-danger">ลบข้อมูล</a>
                               </td>
                            </tr>
                            @endforeach

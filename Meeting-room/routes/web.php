@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\FacebookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +23,18 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/meeting/all', [MeetingController::class, 'index'])->name('meeting');
     Route::post('/meeting/add', [MeetingController::class, 'store'])->name('addMeeting');
     Route::get('/meeting/edit/{id}', [MeetingController::class, 'edit']);
+    Route::post('/meeting/update/{id}', [MeetingController::class, 'update']);
+    Route::get('/meeting/delete/{id}', [MeetingController::class, 'delete']);
+});
+
+Route::controller(GoogleController::class)->group(function () {
+    Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
+    Route::get('auth/google/callback', 'handleGoogleCallback');
+});
+
+Route::controller(FacebookController::class)->group(function () {
+    Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
+    Route::get('auth/facebook/callback', 'handleFacebookCallback');
 });
 
 Route::middleware([

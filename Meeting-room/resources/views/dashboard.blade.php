@@ -1,8 +1,9 @@
 <x-app-layout>
    <x-slot name="header">
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-         {{ __('หน้าแรก') }}
+         สวัสดีคุณ : {{Auth::user()->name }}
       </h2>
+      <b> ยินดีต้อนรับสู่ระบบจองห้องประชุม </b>
 
    </x-slot>
 
@@ -76,7 +77,7 @@
                         @enderror
                         <div class="form-group">
                            <label for="dateroom">วันที่จอง</label>
-                           <input type="date" class="form-control" name="dateroom">
+                           <input type="date" class="form-control" name="dateroom" min="<?php echo date('Y-m-d'); ?>">
                         </div>
                         <br>
                         @error('dateroom')
@@ -84,9 +85,11 @@
                            <span class="text-danger">{{$message}}</span>
                         </div>
                         @enderror
-                        <div class="form-group">
-                           <label for="timeroom">เวลาที่จอง</label>
+                        <div class="input-group">
+                           <label for="timeroom" class="input-group-text">เวลาที่จอง</label>
                            <input type="time" class="form-control" name="timeroom">
+                           <span class="input-group-text">ถึง</span>
+                           <input type="time" class="form-control" name="endtimeroom">
                         </div>
                         @error('timeroom')
                         <div class="my-1">
@@ -101,4 +104,5 @@
          </div>
       </div>
    </div>
+
 </x-app-layout>
